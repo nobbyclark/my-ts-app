@@ -44,13 +44,22 @@
     "env": {
       "node": true,
       "browser": true
+    },
+    "rules": {
+      "no-console": [
+        "error",
+        {
+          "allow": [
+            "warn",
+            "error"
+          ]
+        }
+      ]
     }
   },
   "lint-staged": {
     "*.+(js|json|ts|tsx)": [
-      "eslint"
-    ],
-    "*.+(js|json|ts|tsx)": [
+      "eslint",
       "prettier --write"
     ]
   },
