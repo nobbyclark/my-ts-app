@@ -11,4 +11,15 @@ async function reportError(error: Error, errorInfo: ErrorInfo) {
   return { success: true };
 }
 
-export { reportError };
+const greetings = ["Hello", "Hi", "Hey there", `What's up`, "Howdy", `G'day`];
+
+async function loadGreeting(subject: string) {
+  return { data: { greeting: `${await fetchRandomGreeting()} ${subject}` } };
+}
+
+async function fetchRandomGreeting() {
+  await sleep(1000);
+  return greetings[Math.floor(Math.random() * greetings.length)];
+}
+
+export { reportError, loadGreeting };
