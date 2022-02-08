@@ -28,17 +28,9 @@ function Bomb({ shouldThrow }: { shouldThrow?: boolean }) {
 
 test("calls reportError and renders that there was a problem", () => {
   (mockReportError as jest.Mock).mockResolvedValueOnce({ success: true });
-  const { rerender } = render(
-    <ErrorBoundary>
-      <Bomb />
-    </ErrorBoundary>
-  );
+  const { rerender } = render(<Bomb />, { wrapper: ErrorBoundary });
 
-  rerender(
-    <ErrorBoundary>
-      <Bomb shouldThrow={true} />
-    </ErrorBoundary>
-  );
+  rerender(<Bomb shouldThrow={true} />);
 
   const error = expect.any(Error);
   const info = { componentStack: expect.stringContaining("Bomb") };
@@ -53,11 +45,7 @@ test("calls reportError and renders that there was a problem", () => {
   (console.error as jest.Mock).mockClear();
   (mockReportError as jest.Mock).mockClear();
 
-  rerender(
-    <ErrorBoundary>
-      <Bomb />
-    </ErrorBoundary>
-  );
+  rerender(<Bomb />);
 
   userEvent.click(screen.getByText(/try again/i));
 
