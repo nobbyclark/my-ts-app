@@ -15,4 +15,13 @@ async function loadGreeting(subject: string) {
   return { data: { greeting: `Hello ${subject}` } };
 }
 
-export { reportError, loadGreeting };
+async function savePost(postData: {
+  title: string;
+  content: string;
+  tags: string[];
+}) {
+  await sleep(1000);
+  return { data: { post: postData } };
+}
+
+export { reportError, loadGreeting, savePost };
