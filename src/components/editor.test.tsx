@@ -1,8 +1,15 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Redirect } from "react-router";
 import { Editor } from "./editor";
 import { savePost as mockSavePost } from "../api/api";
+
+jest.mock("react-router", () => {
+  return {
+    Redirect: jest.fn(() => null),
+  };
+});
 
 jest.mock("../api/api");
 
@@ -10,8 +17,8 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-test("renders a form with title, content, tags, and a submit button", () => {
-  (mockSavePost as jest.Mock).mockResolvedValueOnce(() => undefined);
+test("renders a form with title, content, tags, and a submit button", async () => {
+  (mockSavePost as jest.Mock).mockResolvedValueOnce(undefined);
   render(<Editor />);
   const titleInput = screen.getByLabelText(/title/i);
   userEvent.type(titleInput, "Test Title");
@@ -28,4 +35,5 @@ test("renders a form with title, content, tags, and a submit button", () => {
     tags: ["tag1", "tag2"],
   });
   expect(mockSavePost).toHaveBeenCalledTimes(1);
+  await waitFor(() => expect(Redirect).toHaveBeenCalledWith({ to: "/" }, {}));
 });
